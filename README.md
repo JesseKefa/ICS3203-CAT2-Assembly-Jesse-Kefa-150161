@@ -34,13 +34,14 @@ Here are some screenshots to help visualize the tasks and their outputs:
 
 ### 1. Screenshot of Task 1 Output (Control Flow)
 - **Positive Input**  
-  <img src="imgs/task1positive.JPG" width="300"/>  
+  <img src="imgs/task1positive.JPG" width="600"/>  
 - **Zero Input**  
-  <img src="imgs/task1zero.JPG" width="300"/>
+  <img src="imgs/task1zero.JPG" width="600"/>
 
 ### 2. Screenshot of Task 2 Output (Array Reversal)
 
 ![Task 2](imgs/task2.JPG)
+<img src="imgs/task1positive.JPG" width="300"/> 
 
 ### 3. Screenshot of Task 3 Output (Factorial Calculation)
 
