@@ -26,7 +26,7 @@ _start:
     int 0x80                ; call kernel
 
     ; Convert ASCII to integer
-    mov eax, 0              ; clear eax (will store number here)
+    mov eax, 0              ; clear eax 
     mov ecx, user_input     ; pointer to the input buffer
     call ascii_to_int       ; convert input to integer
 
@@ -71,10 +71,10 @@ _exit:
 ascii_to_int:
     ; Convert ASCII to integer
     xor eax, eax            ; clear eax
-    xor ebx, ebx            ; clear ebx (will hold the result)
+    xor ebx, ebx            ; clear ebx, will hold the result
 .next_digit:
     movzx edx, byte [ecx]   ; load byte from input buffer
-    cmp dl, 10              ; check for newline (end of input)
+    cmp dl, 10              ; check for newline
     je .done
     sub dl, '0'             ; convert ASCII to integer
     imul ebx, ebx, 10       ; multiply previous result by 10

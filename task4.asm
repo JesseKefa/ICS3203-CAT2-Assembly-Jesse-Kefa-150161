@@ -1,5 +1,5 @@
 section .data
-    sensor_value db 15   ; Test with value greater than threshold (e.g., 15)
+    sensor_value db 15   ; Test with value greater than threshold as I did with 15
     message db "Sensor value too high!", 0
 
 section .text
@@ -9,7 +9,7 @@ _start:
     ; Read sensor value (simulated here as 15)
     mov al, [sensor_value]
 
-    ; Compare the value to a threshold (e.g., 10)
+    ; Compare the value to a threshold 
     cmp al, 10
     jg sensor_high       ; Jump if greater than 10
 
@@ -23,8 +23,7 @@ sensor_high:
     mov eax, 4           ; sys_write
     mov ebx, 1           ; file descriptor (stdout)
     mov ecx, message     ; address of message
-    mov edx, 23          ; correct length of the message (including null terminator)
-    int 0x80             ; call kernel
+    mov edx, 23          ; correct length of the message
 
     ; Exit program
     mov eax, 1           ; sys_exit
