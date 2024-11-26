@@ -6,3 +6,16 @@
 .bash_history
 .bashrc
 .profile
+
+# Ignore object files
+*.o
+
+# Ignore executables
+task1
+task2
+task3
+task4
+
+# Ignore core dumps
+core
+
