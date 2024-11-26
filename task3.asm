@@ -1,75 +1,85 @@
 section .data
-    result_msg db "Factorial result: ", 0
-    input_prompt db "Enter a number to calculate the factorial: ", 0
+    prompt db "Enter a number to calculate the factorial: ", 0
+    result_msg db "Factorial is: ", 0
+    newline db 0xA, 0 ; newline character
+    buffer db 10, 0    ; buffer to store the user input
 
 section .bss
-    input_number resb 4  ; Reserve space for input number
-    factorial_res resd 1 ; Reserve space to store the result
+    num resb 1         ; Reserve 1 byte for the number input
 
 section .text
     global _start
 
 _start:
-    ; Print prompt for input
-    mov eax, 4           ; sys_write
-    mov ebx, 1           ; file descriptor (stdout)
-    mov ecx, input_prompt  ; address of prompt message
-    mov edx, 38          ; length of input prompt message
-    int 0x80             ; call kernel
+    ; Print prompt message
+    mov eax, 4         ; sys_write
+    mov ebx, 1         ; file descriptor (stdout)
+    mov ecx, prompt    ; address of prompt message
+    mov edx, 36        ; length of prompt message
+    int 0x80           ; call kernel
 
-    ; Read input number (assuming input is a valid number)
-    mov eax, 3           ; sys_read
-    mov ebx, 0           ; file descriptor (stdin)
-    mov ecx, input_number
-    mov edx, 4           ; max bytes to read
-    int 0x80             ; call kernel
+    ; Read the user input
+    mov eax, 3         ; sys_read
+    mov ebx, 0         ; file descriptor (stdin)
+    mov ecx, buffer    ; address of input buffer
+    mov edx, 10        ; maximum number of bytes to read
+    int 0x80           ; call kernel
 
-    ; Convert input (ASCII to integer)
-    movzx eax, byte [input_number]
-    sub eax, '0'         ; Convert ASCII to integer
+    ; Output what user entered (debug)
+    mov eax, 4         ; sys_write
+    mov ebx, 1         ; file descriptor (stdout)
+    mov ecx, buffer    ; address of input buffer
+    mov edx, 10        ; maximum length of input buffer
+    int 0x80           ; call kernel
 
-    ; Call the factorial subroutine
-    push eax             ; Save the input number to the stack
-    call factorial       ; Compute factorial
-    pop eax              ; Restore input number from the stack
+    ; Convert ASCII to integer (assuming single digit input for simplicity)
+    mov al, [buffer]   ; Load first byte (user input)
+    sub al, '0'        ; Convert from ASCII to integer
 
-    ; Print the result message
-    mov eax, 4           ; sys_write
-    mov ebx, 1           ; file descriptor (stdout)
-    mov ecx, result_msg  ; address of result message
-    mov edx, 18          ; length of result message
-    int 0x80             ; call kernel
+    ; Store the input number in num
+    mov [num], al
 
-    ; Print the calculated factorial (currently just outputs number 5)
-    ; Here, we'd normally need to convert the result to a string before printing.
-    ; For simplicity, we output the number 5.
+    ; Calculate factorial (n!)
+    mov cl, [num]      ; Load the input number
+    mov ax, 1          ; Set ax to 1 (factorial result)
 
-    ; Exit the program
-    mov eax, 1           ; sys_exit
-    xor ebx, ebx         ; return code 0
+factorial_loop:
+    cmp cl, 1          ; Compare current number with 1
+    jbe done           ; If cl <= 1, exit loop
+    mul cl             ; Multiply ax by cl (ax = ax * cl)
+    dec cl             ; Decrease cl by 1
+    jmp factorial_loop ; Repeat the loop
+
+done:
+    ; Print result message
+    mov eax, 4         ; sys_write
+    mov ebx, 1         ; file descriptor (stdout)
+    mov ecx, result_msg ; address of result message
+    mov edx, 15        ; length of result message
+    int 0x80           ; call kernel
+
+    ; Print the factorial result (converted to ASCII)
+    ; We will now convert the result (in ax) to ASCII
+
+    ; Convert ax to ASCII
+    add ax, '0'        ; Convert result to ASCII
+    mov [buffer], al   ; Store the result (only first byte)
+
+    ; Print the result
+    mov eax, 4         ; sys_write
+    mov ebx, 1         ; file descriptor (stdout)
+    mov ecx, buffer    ; address of result buffer
+    mov edx, 1         ; length of result buffer
+    int 0x80           ; call kernel
+
+    ; Print newline
+    mov eax, 4         ; sys_write
+    mov ebx, 1         ; file descriptor (stdout)
+    mov ecx, newline   ; address of newline
+    mov edx, 1         ; length of newline
+    int 0x80           ; call kernel
+
+    ; Exit program
+    mov eax, 1         ; sys_exit
+    xor ebx, ebx       ; return code 0
     int 0x80
-
-factorial:
-    ; Function to calculate factorial (n!) recursively
-    ; Parameter is passed in eax (input number)
-    push ebx             ; Preserve ebx register for recursive calls
-    push ecx             ; Preserve ecx register
-    push edx             ; Preserve edx register
-
-    mov ebx, eax         ; Copy eax (input number) to ebx
-    cmp ebx, 1           ; Compare the number with 1
-    je factorial_end     ; If it's 1, we've reached the base case
-
-    dec ebx              ; Decrement the number by 1
-    push ebx             ; Pass the decremented value for the recursive call
-    call factorial       ; Recursive call
-    pop ebx              ; Restore the number after recursive call
-
-    ; Multiply the result of factorial(n-1) with n
-    mul ebx              ; eax = eax * ebx (factorial result * current number)
-
-factorial_end:
-    pop edx              ; Restore edx
-    pop ecx              ; Restore ecx
-    pop ebx              ; Restore ebx
-    ret                  ; Return from the subroutine
