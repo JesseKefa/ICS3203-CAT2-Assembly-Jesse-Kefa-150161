@@ -1,0 +1,8 @@
+*.o
+.cache/
+.vscode-server/
+.wget-hsts
+.motd_shown
+.bash_history
+.bashrc
+.profile
