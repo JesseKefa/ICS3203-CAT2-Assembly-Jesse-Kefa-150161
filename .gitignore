@@ -7,15 +7,13 @@
 .bashrc
 .profile
 
-# Ignore object files
+# Ignore all object files (.o)
 *.o
 
-# Ignore executables
-task1
-task2
-task3
-task4
+# Ignore all executables (task* for all variations)
+task*
 
-# Ignore core dumps
+# Ignore core dumps (in case of a crash)
 core
+
 
