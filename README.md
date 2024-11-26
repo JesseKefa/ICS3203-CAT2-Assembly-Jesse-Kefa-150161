@@ -32,22 +32,24 @@
 
 Here are some screenshots to help visualize the tasks and their outputs:
 
-### 1. Screenshot of Task 1 Output (Control Flow)
-- **Positive Input**  
+### 1. Control Flow
+- **Positive Input** 
+
   <img src="imgs/task1positive.JPG" width="600"/>  
+
 - **Zero Input**  
+
   <img src="imgs/task1zero.JPG" width="600"/>
 
-### 2. Screenshot of Task 2 Output (Array Reversal)
+### 2. Array Reversal
 
-![Task 2](imgs/task2.JPG)
-<img src="imgs/task1positive.JPG" width="300"/> 
+<img src="imgs/task2.JPG" width="600"/> 
 
-### 3. Screenshot of Task 3 Output (Factorial Calculation)
+### 3. Factorial Calculation
 
-### 4. Screenshot of Task 4 Output (Sensor Monitoring)
+### 4. Sensor Monitoring
 
-![Task 4](imgs/task2.JPG)
+<img src="imgs/task4.JPG" width="600"/> 
 
 ## Challenges and Insights
 - Task 1 was challenging because managing conditional jumps effectively requires a good understanding of control flow.
