@@ -1,8 +1,7 @@
 section .data
     prompt db "Enter a number to calculate the factorial: ", 0
     result_msg db "Factorial is: ", 0
-    newline db 0xA, 0 ; newline character
-    buffer db 10, 0    ; buffer to store the user input
+    newline db 0xA, 0  ; Newline character
 
 section .bss
     num resb 1         ; Reserve 1 byte for the number input
@@ -18,39 +17,23 @@ _start:
     mov edx, 36        ; length of prompt message
     int 0x80           ; call kernel
 
-    ; Read the user input
+    ; Read user input (single digit for simplicity)
     mov eax, 3         ; sys_read
     mov ebx, 0         ; file descriptor (stdin)
-    mov ecx, buffer    ; address of input buffer
-    mov edx, 10        ; maximum number of bytes to read
+    mov ecx, num       ; address of input buffer
+    mov edx, 1         ; maximum number of bytes to read
     int 0x80           ; call kernel
 
-    ; Output what user entered (debug)
-    mov eax, 4         ; sys_write
-    mov ebx, 1         ; file descriptor (stdout)
-    mov ecx, buffer    ; address of input buffer
-    mov edx, 10        ; maximum length of input buffer
-    int 0x80           ; call kernel
-
-    ; Convert ASCII to integer (assuming single digit input for simplicity)
-    mov al, [buffer]   ; Load first byte (user input)
+    ; Convert input from ASCII to integer
+    mov al, [num]      ; Load input value
     sub al, '0'        ; Convert from ASCII to integer
 
-    ; Store the input number in num
-    mov [num], al
+    ; Save the number in a register to pass it to the subroutine
+    mov bl, al         ; Store input number in bl for the subroutine
 
-    ; Calculate factorial (n!)
-    mov cl, [num]      ; Load the input number
-    mov ax, 1          ; Set ax to 1 (factorial result)
+    ; Call factorial subroutine
+    call factorial
 
-factorial_loop:
-    cmp cl, 1          ; Compare current number with 1
-    jbe done           ; If cl <= 1, exit loop
-    mul cl             ; Multiply ax by cl (ax = ax * cl)
-    dec cl             ; Decrease cl by 1
-    jmp factorial_loop ; Repeat the loop
-
-done:
     ; Print result message
     mov eax, 4         ; sys_write
     mov ebx, 1         ; file descriptor (stdout)
@@ -58,18 +41,15 @@ done:
     mov edx, 15        ; length of result message
     int 0x80           ; call kernel
 
-    ; Print the factorial result (converted to ASCII)
-    ; We will now convert the result (in ax) to ASCII
+    ; Convert factorial result in eax to ASCII and print it
+    add al, '0'        ; Convert result to ASCII
+    mov [num], al      ; Store the result in buffer
 
-    ; Convert ax to ASCII
-    add ax, '0'        ; Convert result to ASCII
-    mov [buffer], al   ; Store the result (only first byte)
-
-    ; Print the result
+    ; Print the result (factorial value)
     mov eax, 4         ; sys_write
     mov ebx, 1         ; file descriptor (stdout)
-    mov ecx, buffer    ; address of result buffer
-    mov edx, 1         ; length of result buffer
+    mov ecx, num       ; address of result (single digit)
+    mov edx, 1         ; length of result (1 digit)
     int 0x80           ; call kernel
 
     ; Print newline
@@ -79,7 +59,32 @@ done:
     mov edx, 1         ; length of newline
     int 0x80           ; call kernel
 
-    ; Exit program
+    ; Exit the program
     mov eax, 1         ; sys_exit
     xor ebx, ebx       ; return code 0
     int 0x80
+
+; Subroutine for calculating factorial
+factorial:
+    ; Save registers to the stack to preserve state
+    push eax           ; Save the current value of eax (used to store result)
+    push ebx           ; Save the current value of ebx (input number)
+
+    ; Check if the input number (bl) is 0 or 1
+    cmp bl, 1
+    jbe factorial_done ; If bl <= 1, factorial is 1
+
+    ; Otherwise, calculate factorial recursively
+    dec bl             ; Decrement the input number (n-1)
+    call factorial     ; Recursive call with (n-1)
+    
+    ; After recursion, multiply eax by the current number (n)
+    pop ebx            ; Restore the previous value of ebx (the input number)
+    mul bl             ; Multiply eax (current result) by bl (current number)
+    
+factorial_done:
+    ; Restore registers from the stack
+    pop ebx            ; Restore the original value of ebx
+    pop eax            ; Restore the original value of eax
+
+    ret                ; Return to the caller (main program)
