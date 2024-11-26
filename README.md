@@ -1,7 +1,7 @@
 # ICS3203 CAT 2 - Assembly Programming
 
 ## Task 1: Control Flow and Conditional Logic
-- **Purpose**: This program accepts an integer input and classifies it as positive, negative, or zero using conditional jumps (`JG`, `JL`, `JGE`).
+- **Purpose**: This program accepts an integer input and classifies it as positive, negative, or zero using conditional jumps.
 - **Compiling and Running**:
   1. Assemble the code with `nasm -f elf32 task1.asm -o task1.o`
   2. Link the object file with `ld -m elf_i386 -o task1 task1.o`
@@ -22,7 +22,7 @@
   3. Run the program with `./task3`
 
 ## Task 4: Data Monitoring and Control Simulation
-- **Purpose**: Simulates a control system for monitoring a sensor value (water level) and taking actions based on the input (e.g., turning on/off a motor).
+- **Purpose**: Simulates a control system for monitoring a sensor value (water level) and taking actions based on the input like turning a motor on/off.
 - **Compiling and Running**:
   1. Assemble the code with `nasm -f elf32 task4.asm -o task4.o`
   2. Link the object file with `ld -m elf_i386 -o task4 task4.o`
