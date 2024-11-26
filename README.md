@@ -33,8 +33,10 @@
 Here are some screenshots to help visualize the tasks and their outputs:
 
 ### 1. Screenshot of Task 1 Output (Control Flow)
-
-![Image 1](imgs/task1positive.JPG) ![Image 2](imgs/task1zero.JPG)
+- **Positive Input**  
+  <img src="imgs/task1positive.JPG" width="300"/>  
+- **Zero Input**  
+  <img src="imgs/task1zero.JPG" width="300"/>
 
 ### 2. Screenshot of Task 2 Output (Array Reversal)
 
@@ -42,24 +44,9 @@ Here are some screenshots to help visualize the tasks and their outputs:
 
 ### 3. Screenshot of Task 3 Output (Factorial Calculation)
 
-
 ### 4. Screenshot of Task 4 Output (Sensor Monitoring)
 
 ![Task 4](imgs/task2.JPG)
-
-## Displaying Images Inline (Row)
-
-You can also display images side by side like this:
-
-![Image 1](images/task1_output.png) ![Image 2](images/task2_output.png) ![Image 3](images/task3_output.png)
-
-## Displaying Images in a Column
-
-You can also display images one below the other like this:
-
-![Task 1](images/task1_output.png)  
-![Task 2](images/task2_output.png)  
-![Task 3](images/task3_output.png)  
 
 ## Challenges and Insights
 - Task 1 was challenging because managing conditional jumps effectively requires a good understanding of control flow.
