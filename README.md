@@ -3,7 +3,7 @@
 ## Task 1: Control Flow and Conditional Logic
 - **Purpose**: This program accepts an integer input and classifies it as positive, negative, or zero using conditional jumps.
 - **Compiling and Running**:
-  1. Assemble the code with `nasm -f elf32 task1.asm -o task1.o`
+  1. Assemble the code with ```nasm -f elf32 task1.asm -o task1.o```
   2. Link the object file with `ld -m elf_i386 -o task1 task1.o`
   3. Run the program with `./task1`
 
